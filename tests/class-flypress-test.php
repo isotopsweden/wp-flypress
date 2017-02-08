@@ -47,14 +47,6 @@ class Flypress_Test extends \WP_UnitTestCase {
 		$this->assertFalse( $out['error'] );
 	}
 
-	public function test_filter_delete_file() {
-		$fly = new Flypress( new Local( __DIR__ . '/trunk' ) );
-		$dir = wp_upload_dir();
-
-		$out = $fly->filter_delete_file( $dir['basedir'] . '/2017/02/me.jpg' );
-		$this->assertSame( '2017/02/me.jpg', $out );
-	}
-
 	public function test_get_attachment_url_default() {
 		$fly = new Flypress( new Local( __DIR__ . '/trunk' ) );
 

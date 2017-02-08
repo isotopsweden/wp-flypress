@@ -63,16 +63,47 @@ class Flypress {
 		FlysystemStreamWrapper::register( 'fly', $this->filesystem );
 
 		// Set original upload directory.
-		$this->orginal_dir = wp_upload_dir();
+		$this->orginal_dir = wp_upload_dir( null, false );
 
 		// Setup filter for filtering upload directory.
 		add_filter( 'upload_dir', [$this, 'filter_upload_dir'] );
 
-		// Setup filter for filtering delete file path.
-		add_filter( 'wp_delete_file', [$this, 'filter_delete_file'] );
+		// Setup action for deleting attachments and sizes.
+		add_action( 'delete_attachment', [$this, 'delete_attachment'] );
 
 		// Setup filter for filtering attachment url.
 		add_filter( 'wp_get_attachment_url', [$this, 'get_attachment_url'] );
+	}
+
+	/**
+	 * Delete attachments and sizes.
+	 *
+	 * @param  int $attachment_id
+	 *
+	 * @return bool
+	 */
+	public function delete_attachment( int $attachment_id ) {
+		$data = get_post_meta( $attachment_id, '_wp_attachment_metadata', true );
+		$data = is_array( $data ) ? $data : [];
+		$data['sizes'] = $data['sizes'] ?? [];
+
+		// Add default size as a size.
+		if ( $file = get_post_meta( $attachment_id, '_wp_attached_file', true ) ) {
+			$data['sizes'][] = ['file' => $file];
+		}
+
+		$dir = wp_upload_dir( null, true );
+
+		foreach ( array_values( $data['sizes'] ) as $size ) {
+			$path = $dir['basedir'] . '/' . $size['file'];
+			$path = explode( '://', $path );
+
+			if ( count( $path ) < 2 ) {
+				continue;
+			}
+
+			$this->filesystem->delete( $path[1] );
+		}
 	}
 
 	/**
@@ -118,19 +149,6 @@ class Flypress {
 	}
 
 	/**
-	 * Filter delete file to work with fly protocol.
-	 *
-	 * @param  string $path
-	 *
-	 * @return string
-	 */
-	public function filter_delete_file( string $path ) {
-		$dir = wp_upload_dir();
-
-		return str_replace( trailingslashit( $dir['basedir'] ), '', $path );
-	}
-
-	/**
 	 * Get adapter.
 	 *
 	 * @return \League\Flysystem\AdapterInterface
@@ -147,7 +165,7 @@ class Flypress {
 	 * @return string
 	 */
 	public function get_attachment_url( string $url ) {
-		$dir = wp_upload_dir();
+		$dir = wp_upload_dir( null, true );
 		$url = str_replace( $this->orginal_dir['baseurl'], $dir['baseurl'], $url );
 
 		/**
