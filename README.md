@@ -4,6 +4,11 @@
 
 Use [Flysystem](https://flysystem.thephpleague.com/) with WordPress.
 
+## Todo
+
+- [ ] Fix so sizes works
+- [ ] Add WP-CLI command so we can sync media
+
 ## Installation
 
 ```
