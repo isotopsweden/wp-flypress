@@ -4,11 +4,6 @@
 
 Use [Flysystem](https://flysystem.thephpleague.com/) with WordPress.
 
-## Todo
-
-- [ ] Fix so sizes works
-- [ ] Add WP-CLI command so we can sync media
-
 ## Installation
 
 ```
@@ -30,6 +25,11 @@ define( 'AWS_S3_BUCKET', 'bwh' );
 define( 'AWS_S3_KEY', 'key' );
 define( 'AWS_S3_SECRET', 'secret' );
 ```
+
+## Todo
+
+- [ ] Fix so sizes works
+- [ ] Add WP-CLI command so we can sync media
 
 ## License
 
