@@ -24,22 +24,6 @@ add_filter( 'flypress_upload_url', function () {
 } );
 
 /**
- * Configure flypress to use another base path based on AWS S3 bucket name.
- *
- * @param  string $path
- *
- * @return string
- */
-add_filter( 'flypress_base_path', function ( $path ) {
-	// Bail if no AWS S3 bucket.
-	if ( ! defined( 'AWS_S3_BUCKET' ) ) {
-		return $path;
-	}
-
-	return 'fly://' . strtolower( AWS_S3_BUCKET );
-} );
-
-/**
  * Configure flypress to use AWS S3 Adapter.
  *
  * @return \League\Flysystem\AdapterInterface
