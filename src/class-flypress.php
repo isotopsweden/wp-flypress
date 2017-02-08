@@ -5,7 +5,8 @@ namespace Isotop\Flypress;
 use Exception;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem;
-use Twistor\FlysystemStreamWrapper;
+use League\Flysystem\FileNotFoundException;
+use Ramsey\Uuid\Uuid;
 
 class Flypress {
 
@@ -60,7 +61,7 @@ class Flypress {
 		$this->filesystem = new Filesystem( $this->adapter );
 
 		// Register flysystem stream wrapper.
-		FlysystemStreamWrapper::register( 'fly', $this->filesystem );
+		Stream_Wrapper::register( 'fly', $this->filesystem );
 
 		// Set original upload directory.
 		$this->orginal_dir = wp_upload_dir( null, false );
@@ -73,6 +74,9 @@ class Flypress {
 
 		// Setup filter for filtering attachment url.
 		add_filter( 'wp_get_attachment_url', [$this, 'get_attachment_url'] );
+
+		// Setup filter for filtering filename.
+		add_filter( 'wp_handle_upload_prefilter', [$this, 'filter_handle_upload_prefilter'] );
 	}
 
 	/**
@@ -102,8 +106,34 @@ class Flypress {
 				continue;
 			}
 
-			$this->filesystem->delete( $path[1] );
+			try {
+				$this->filesystem->delete( $path[1] );
+			} catch ( FileNotFoundException $e ) {
+				continue;
+			}
 		}
+	}
+
+	/**
+	 * Add a timestamp to each file name since WordPress built in
+	 * unique filename check don't work when modifying filesystem.
+	 *
+	 * @param  array  $file
+	 *
+	 * @return array
+	 */
+	public function filter_handle_upload_prefilter( array $file ) {
+		$extension = pathinfo( $file['name'], PATHINFO_EXTENSION );
+
+		if ( ! $extension ) {
+			return $file;
+		}
+
+		$filename = str_replace( '.' . $extension, '', $file['name'] );
+		$newname = $name = Uuid::uuid4();
+		$file['name'] = str_replace( $filename, $newname, $file['name'] );
+
+		return $file;
 	}
 
 	/**

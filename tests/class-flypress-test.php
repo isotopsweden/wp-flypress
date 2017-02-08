@@ -21,6 +21,22 @@ class Flypress_Test extends \WP_UnitTestCase {
 		$this->assertFalse( $out['error'] );
 	}
 
+	public function test_filter_handle_upload_prefilter() {
+		$fly = new Flypress( new Local( __DIR__ . '/trunk' ) );
+
+		$file = [
+			'name' => 'path/to/file'
+		];
+
+		$this->assertSame( $file, $fly->filter_handle_upload_prefilter( $file ) );
+
+		$file = [
+			'name' => 'path/to/file.png'
+		];
+
+		$this->assertNotSame( $file, $fly->filter_handle_upload_prefilter( $file ) );
+	}
+
 	public function test_filter_upload_url_base_path() {
 		$fly = new Flypress( new Local( __DIR__ . '/trunk' ) );
 

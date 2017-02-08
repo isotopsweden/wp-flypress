@@ -30,7 +30,8 @@
     "aws/aws-sdk-php": "^3.21",
     "league/flysystem": "^1.0",
     "league/flysystem-aws-s3-v3": "^1.0",
-    "twistor/flysystem-stream-wrapper": "^1.0"
+    "twistor/flysystem-stream-wrapper": "^1.0",
+    "ramsey/uuid": "^3.5"
   },
   "require-dev": {
     "frozzare/wp-test-suite": "~1.0",
