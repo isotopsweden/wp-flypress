@@ -1,0 +1,21 @@
+<?php xml version="1.0"?>
+<ruleset name="{plugin-name}">
+  <description>{plugin-name} rules for PHP_CodeSniffer</description>
+
+  <exclude-pattern>node_modules/*</exclude-pattern>
+  <exclude-pattern>vendor/*</exclude-pattern>
+
+  <rule ref="Generic.Arrays.DisallowLongArraySyntax" />
+
+  <rule ref="WordPress-Core">
+    <exclude name="PEAR.Functions.FunctionCallSignature.EmptyLine" />
+    <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions" />
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceAfterArrayOpener" />
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceBeforeArrayCloser" />
+    <exclude name="WordPress.Arrays.ArrayDeclaration" />
+    <exclude name="WordPress.PHP.YodaConditions" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBetweenStructureColon" />
+    <exclude name="Squiz.Commenting.LongConditionClosingComment.Missing" />
+    <exclude name="PSR2"></exclude>
+  </rule>
+</ruleset>
