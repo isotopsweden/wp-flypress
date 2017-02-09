@@ -29,7 +29,6 @@ define( 'AWS_S3_SECRET', 'secret' );
 ## Todo
 
 - [ ] Fix so sizes works
-- [ ] Add WP-CLI command so we can sync media
 
 ## License
 
