@@ -7,26 +7,27 @@ use Twistor\FlysystemStreamWrapper;
 
 class Stream_Wrapper extends FlysystemStreamWrapper {
 
-    /**
-     * Registers the stream wrapper protocol if not already registered.
-     *
-     * @param string              $protocol      The protocol.
-     * @param FilesystemInterface $filesystem    The filesystem.
-     * @param array|null          $configuration Optional configuration.
-     *
-     * @return bool True if the protocal was registered, false if not.
-     */
-    public static function register( $protocol, FilesystemInterface $filesystem, array $configuration = null ) {
-        if ( static::streamWrapperExists( $protocol ) ) {
-            return false;
-        }
+	/**
+	 * Registers the stream wrapper protocol if not already registered.
+	 *
+	 * @param string              $protocol      The protocol.
+	 * @param FilesystemInterface $filesystem    The filesystem.
+	 * @param array|null          $configuration Optional configuration.
+	 *
+	 * @return bool True if the protocal was registered, false if not.
+	 */
+	public static function register( $protocol, FilesystemInterface $filesystem, array $configuration = null ) {
+		if ( static::streamWrapperExists( $protocol ) ) {
+			return false;
+		}
 
-        static::$config[$protocol] = $configuration ?: static::$defaultConfiguration;
-        static::registerPlugins( $protocol, $filesystem );
-        static::$filesystems[$protocol] = $filesystem;
+		// @codingStandardsIgnoreLine
+		static::$config[$protocol] = $configuration ?: static::$defaultConfiguration;
+		static::registerPlugins( $protocol, $filesystem );
+		static::$filesystems[$protocol] = $filesystem;
 
-        return stream_wrapper_register( $protocol, __CLASS__ );
-    }
+		return stream_wrapper_register( $protocol, __CLASS__ );
+	}
 
 	/**
 	 * If the file is actually just a path to a directory

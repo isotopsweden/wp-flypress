@@ -197,7 +197,9 @@ class Flypress {
 
 		// Add default size as a size.
 		if ( $file = get_post_meta( $attachment_id, '_wp_attached_file', true ) ) {
-			$data['sizes'][] = ['file' => $file];
+			$data['sizes'][] = [
+				'file' => $file
+			];
 		}
 
 		$dir = wp_upload_dir( null, true );
@@ -288,7 +290,7 @@ class Flypress {
 		 */
 		$base_path = apply_filters( 'flypress_base_path', 'fly://' );
 		$base_path = is_string( $base_path ) ? $base_path : 'fly://';
-		$base_path = $base_path[strlen( $base_path )-1] === '/' ? str_replace( '://', ':/', $base_path ) : $base_path;
+		$base_path = $base_path[strlen( $base_path ) - 1] === '/' ? str_replace( '://', ':/', $base_path ) : $base_path;
 
 		// Replace upload directory paths with fly path.
 		$dir['path']    = str_replace( WP_CONTENT_DIR, $base_path, $dir['path'] );
@@ -300,8 +302,8 @@ class Flypress {
 
 		// Sometimes you get 'uploads/uploads' and that's bad.
 		$uploads = defined( 'UPLOADS' ) ? UPLOADS : '/uploads';
-		$dir['url'] = str_replace( $uploads.$uploads, $uploads, $dir['url'] );
-		$dir['baseurl'] = str_replace( $uploads.$uploads, $uploads, $dir['baseurl'] );
+		$dir['url'] = str_replace( $uploads . $uploads, $uploads, $dir['url'] );
+		$dir['baseurl'] = str_replace( $uploads . $uploads, $uploads, $dir['baseurl'] );
 
 		return $dir;
 	}
