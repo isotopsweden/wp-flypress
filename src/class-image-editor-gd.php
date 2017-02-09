@@ -7,41 +7,6 @@ use WP_Error;
 
 class Image_Editor_GD extends WP_Image_Editor_GD {
 
-	public function load() {
-	    if ( $this->image )
-	        return true;
-
-	  #  var_dump(file_get_contents($this->file));
-	   var_dump(is_file($this->file), $this->file);exit;
-
-
-
-	    if ( ! is_file( $this->file ) )
-	        return new WP_Error( 'error_loading_image', __('File doesn&#8217;t exist?'), $this->file );
-
-	    // Set artificially high because GD uses uncompressed images in memory.
-	    wp_raise_memory_limit( 'image' );
-
-	    $this->image = @imagecreatefromstring( file_get_contents( $this->file ) );
-
-	    if ( ! is_resource( $this->image ) )
-	        return new WP_Error( 'invalid_image', __('File is not an image.'), $this->file );
-
-	    $size = @getimagesize( $this->file );
-	    if ( ! $size )
-	        return new WP_Error( 'invalid_image', __('Could not read image size.'), $this->file );
-
-	    if ( function_exists( 'imagealphablending' ) && function_exists( 'imagesavealpha' ) ) {
-	        imagealphablending( $this->image, false );
-	        imagesavealpha( $this->image, true );
-	    }
-
-	    $this->update_size( $size[0], $size[1] );
-	    $this->mime_type = $size['mime'];
-
-	    return $this->set_quality();
-	}
-
 	/**
 	 * GD editor can't handle stream wrapper paths by default.
 	 *
@@ -63,8 +28,6 @@ class Image_Editor_GD extends WP_Image_Editor_GD {
 		if ( strpos( $filename, $upload_dir['basedir'] ) === 0 ) {
 			$temp_filename = tempnam( get_temp_dir(), 'flypress' );
 		}
-
-		var_dump($temp_filename);exit;
 
 		$save = parent::_save( $image, $temp_filename, $mime_type );
 
