@@ -44,7 +44,7 @@ add_filter( 'flypress_upload_url', function () {
 } );
 ```
 
-Look at the built in `aws-s3` adapter to check how we created a working flypress adapter.
+Look at the built in `aws-s3` adapter to check how we created a working flypress adapter and if you look at the source code for flypress you will find some more filters that you can hook into.
 
 ## Todo
 
