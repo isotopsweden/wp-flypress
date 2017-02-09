@@ -1,5 +1,5 @@
 {
-  "name": "wp-flypress",
+  "name": "isotopsweden/wp-flypress",
   "type": "wordpress-muplugin",
   "license": "MIT",
   "description": "Use Flysystem with WordPress",
