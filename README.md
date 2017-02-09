@@ -2,7 +2,7 @@
 
 > WIP - Requires PHP 7.0 and WordPress 4.6
 
-Use [Flysystem](https://flysystem.thephpleague.com/) with WordPress. Flypress will rename each file uploaded to WordPress with a new name based on uuid v4.
+Use [Flysystem](https://flysystem.thephpleague.com/) with WordPress. Flypress will rename each file uploaded to WordPress with a new name based on uuid v4, the attachment title will not be changed to uuid.
 
 ## Installation
 
