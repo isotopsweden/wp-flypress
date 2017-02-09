@@ -100,6 +100,9 @@ class Flypress {
 
 		// Setup filter for filtering image editors.
 		add_filter( 'wp_image_editors', [$this, 'filter_image_editors'], 9 );
+
+		// Setup filter for filtering read image metadata.
+		add_filter( 'wp_read_image_metadata', [$this, 'filter_read_image_metadata'], 10, 2 );
 	}
 
 	/**
@@ -184,6 +187,28 @@ class Flypress {
 				continue;
 			}
 		}
+	}
+
+	/**
+	 * Filter read image metadata since `exif_read_data` don't work with streams.
+	 *
+	 * @param  array  $meta
+	 * @param  string $file
+	 *
+	 * @return array
+	 */
+	public function filter_read_image_metadata( array $meta, string $file ) {
+		remove_filter( 'wp_read_image_metadata', [$this, 'filter_read_image_metadata'], 10 );
+		$temp_file = wp_tempnam( $file, 'flypress' );
+
+		copy( $file, $temp_file );
+		$meta      = wp_read_image_metadata( $temp_file );
+
+		add_filter( 'wp_read_image_metadata', [$this, 'filter_read_image_metadata'], 10, 2 );
+
+		unlink( $temp_file );
+
+		return $meta;
 	}
 
 	/**
