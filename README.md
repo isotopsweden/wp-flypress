@@ -2,7 +2,7 @@
 
 > WIP - Requires PHP 7.0 and WordPress 4.6
 
-Use [Flysystem](https://flysystem.thephpleague.com/) with WordPress.
+Use [Flysystem](https://flysystem.thephpleague.com/) with WordPress. Flypress will rename each file uploaded to WordPress with a new name based on uuid v4.
 
 ## Installation
 
@@ -25,6 +25,26 @@ define( 'AWS_S3_BUCKET', 'bwh' );
 define( 'AWS_S3_KEY', 'key' );
 define( 'AWS_S3_SECRET', 'secret' );
 ```
+
+## Custom adapter
+
+Add a custom adapter to flypress using `flypress_adapter` filter.
+
+```php
+add_filter( 'flypress_adapter', function () {
+  return new \League\Flysystem\Adapter\Local( '/path/to/folder' );
+} );
+```
+
+With `flypress_upload_url` can you modify how the base url of a upload url looks like.
+
+```php
+add_filter( 'flypress_upload_url', function () {
+  return 'http://localhost:9000/';
+} );
+```
+
+Look at the built in `aws-s3` adapter to check how we created a working flypress adapter.
 
 ## Todo
 
