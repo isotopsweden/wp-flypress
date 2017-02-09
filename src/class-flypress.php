@@ -25,6 +25,13 @@ class Flypress {
 	protected $filesystem;
 
 	/**
+	 * Orginal file name.
+	 *
+	 * @var string
+	 */
+	protected $file_name;
+
+	/**
 	 * Orginal upload directory.
 	 *
 	 * @var array
@@ -103,6 +110,28 @@ class Flypress {
 
 		// Setup filter for filtering read image metadata.
 		add_filter( 'wp_read_image_metadata', [$this, 'filter_read_image_metadata'], 10, 2 );
+
+		// Setup action for saving attachment metadata.
+		add_filter( 'wp_update_attachment_metadata', [$this, 'update_attachment_metadata'], 10, 2 );
+	}
+
+	/**
+	 * Update attachment metadata.
+	 *
+	 * @param  array $data
+	 * @param  int   $attachment_id
+	 *
+	 * @return array
+	 */
+	public function update_attachment_metadata( array $data, int $attachment_id ) {
+		wp_update_post( [
+			'ID'         => $attachment_id,
+			'post_title' => pathinfo( $this->file_name, PATHINFO_FILENAME )
+		] );
+
+		$this->file_name = '';
+
+		return $data;
 	}
 
 	/**
@@ -202,7 +231,7 @@ class Flypress {
 		$temp_file = wp_tempnam( $file, 'flypress' );
 
 		copy( $file, $temp_file );
-		$meta      = wp_read_image_metadata( $temp_file );
+		$meta = wp_read_image_metadata( $temp_file );
 
 		add_filter( 'wp_read_image_metadata', [$this, 'filter_read_image_metadata'], 10, 2 );
 		unlink( $temp_file );
@@ -227,6 +256,9 @@ class Flypress {
 
 		$filename = str_replace( '.' . $extension, '', $file['name'] );
 		$newname = $name = Uuid::uuid4();
+
+		$this->file_name = $file['name'];
+
 		$file['name'] = str_replace( $filename, $newname, $file['name'] );
 
 		return $file;
