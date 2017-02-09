@@ -10,11 +10,11 @@ class Stream_Wrapper extends FlysystemStreamWrapper {
 	/**
 	 * Registers the stream wrapper protocol if not already registered.
 	 *
-	 * @param string              $protocol      The protocol.
-	 * @param FilesystemInterface $filesystem    The filesystem.
-	 * @param array|null          $configuration Optional configuration.
+	 * @param string              $protocol
+	 * @param FilesystemInterface $filesystem
+	 * @param array|null          $configuration
 	 *
-	 * @return bool True if the protocal was registered, false if not.
+	 * @return bool
 	 */
 	public static function register( $protocol, FilesystemInterface $filesystem, array $configuration = null ) {
 		if ( static::streamWrapperExists( $protocol ) ) {
