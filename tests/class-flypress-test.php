@@ -9,8 +9,6 @@ class Flypress_Test extends \WP_UnitTestCase {
 
 	public function create_image( $name ) {
 		$img = imagecreatetruecolor( 120, 20 );
-		$bg = imagecolorallocate( $img, 255, 255, 255 );
-		imagefilledrectangle( $img, 0, 0, 120, 20, $bg );
 		ob_start();
 		imagepng( $img );
 		$contents =  ob_get_contents();

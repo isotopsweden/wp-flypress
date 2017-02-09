@@ -205,7 +205,6 @@ class Flypress {
 		$meta      = wp_read_image_metadata( $temp_file );
 
 		add_filter( 'wp_read_image_metadata', [$this, 'filter_read_image_metadata'], 10, 2 );
-
 		unlink( $temp_file );
 
 		return $meta;
