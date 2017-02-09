@@ -12,7 +12,7 @@ composer require isotopsweden/wp-flypress
 
 ## Usage
 
-Example configuration for using the built in adapter for AWS S3 with [Minio](https://minio.io/) locally. Endpoint constant is not needed when using real AWS S3.
+Example configuration for using the built in adapter for AWS S3 with [Minio](https://minio.io/) locally. Region and endpoint constant is optional.
 
 ```php
 /* Flypress */
@@ -24,6 +24,7 @@ define( 'AWS_S3_BUCKET_URL', 'http://localhost:9999/bwh' );
 define( 'AWS_S3_BUCKET', 'bwh' );
 define( 'AWS_S3_KEY', 'key' );
 define( 'AWS_S3_SECRET', 'secret' );
+define( 'AWS_S3_REGION', 'us-east-1' );
 ```
 
 ## Custom adapter
