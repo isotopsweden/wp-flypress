@@ -21,6 +21,14 @@ class Flypress_Test extends \WP_UnitTestCase {
 		$this->assertFalse( $out['error'] );
 	}
 
+	public function test_filter_image_editors() {
+		$fly = new Flypress( new Local( __DIR__ . '/trunk' ) );
+
+		$out = $fly->filter_image_editors( ['WP_Image_Editor_Imagick', 'WP_Image_Editor_GD'] );
+
+		$this->assertSame(['Isotop\\Flypress\\Image_Editor_GD', 'Isotop\\Flypress\\Image_Editor_Imagick'], $out);
+	}
+
 	public function test_filter_handle_upload_prefilter() {
 		$fly = new Flypress( new Local( __DIR__ . '/trunk' ) );
 

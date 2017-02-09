@@ -77,6 +77,31 @@ class Flypress {
 
 		// Setup filter for filtering filename.
 		add_filter( 'wp_handle_upload_prefilter', [$this, 'filter_handle_upload_prefilter'] );
+
+		// Setup filter for filtering image editors.
+		add_filter( 'wp_image_editors', [$this, 'filter_image_editors'], 9 );
+	}
+
+	/**
+	 * Filter image editors to add our own imagick editor.
+	 *
+	 * @param  array $editors
+	 *
+	 * @return array
+	 */
+	public function filter_image_editors( array $editors ) {
+		if ( ( $position = array_search( 'WP_Image_Editor_Imagick', $editors ) ) !== false ) {
+			unset( $editors[ $position ] );
+		}
+
+		if ( ( $position = array_search( 'WP_Image_Editor_GD', $editors ) ) !== false ) {
+			unset( $editors[ $position ] );
+		}
+
+		array_unshift( $editors, __NAMESPACE__ . '\\Image_Editor_Imagick' );
+		array_unshift( $editors, __NAMESPACE__ . '\\Image_Editor_GD' );
+
+		return $editors;
 	}
 
 	/**

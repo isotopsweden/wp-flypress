@@ -21,3 +21,24 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 add_action( 'plugins_loaded', function () {
 	return new \Isotop\Flypress\Flypress;
 } );
+
+/**
+ * Custom autoload that will load image editors on the fly.
+ *
+ * @param  string $class_name
+ */
+function flypress_autoload( $class_name ) {
+	if ( strpos( $class_name, 'Flypress' ) === false ) {
+		return;
+	}
+
+	$parts = explode( '\\', $class_name );
+	$class_file = 'class-' . strtolower( str_replace( '_', '-', $parts[2] ) ) . '.php';
+	$class_path = __DIR__ . '/src/' . $class_file;
+
+	if ( file_exists( $class_path ) ) {
+		require $class_path;
+	}
+}
+
+spl_autoload_register( 'flypress_autoload' );
