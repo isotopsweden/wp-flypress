@@ -47,6 +47,11 @@ add_filter( 'flypress_upload_url', function () {
 
 Look at the built in `aws-s3` adapter to check how we created a working flypress adapter and if you look at the source code for flypress you will find some more filters that you can hook into.
 
+## WP-CLI
+
+* `wp flypress test` - test if flysystem and flypress works, it will write, read and delete a file on the used adapter. Useful it you would like to test if AWS S3 connection is working or not.
+* `wp flypress migrate [--delete-local]` - migrates all images to flysystem with a optional flag to delete local attachment if any.
+
 ## Todo
 
 - [ ] Fix so sizes works
