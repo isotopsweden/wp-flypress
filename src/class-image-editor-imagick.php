@@ -2,7 +2,6 @@
 
 namespace Isotop\Flysystem;
 
-use Imagick;
 use WP_Image_Editor_Imagick;
 
 class Image_Editor_Imagick extends WP_Image_Editor_Imagick {
