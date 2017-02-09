@@ -19,7 +19,11 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
  * Boot the plugin.
  */
 add_action( 'plugins_loaded', function () {
-	return new \Isotop\Flypress\Flypress;
+	if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		require_once __DIR__ . '/src/class-cli.php';
+	}
+
+	return \Isotop\Flypress\Flypress::instance();
 } );
 
 /**

@@ -9,7 +9,10 @@ class Flypress_Test extends \WP_UnitTestCase {
 
 	public function test_fly() {
 		$fly = new Flypress;
-		$this->assertNull( $fly->get_adapter() );
+		$this->assertNull( $fly->adapter() );
+
+		$fly = new Flypress( new Local( __DIR__ . '/trunk' ) );
+		$this->assertInstanceOf( '\League\Flysystem\Filesystem', $fly->filesystem() );
 	}
 
 	public function test_filter_upload_url() {
@@ -26,7 +29,7 @@ class Flypress_Test extends \WP_UnitTestCase {
 
 		$out = $fly->filter_image_editors( ['WP_Image_Editor_Imagick', 'WP_Image_Editor_GD'] );
 
-		$this->assertSame(['Isotop\\Flypress\\Image_Editor_GD', 'Isotop\\Flypress\\Image_Editor_Imagick'], $out);
+		$this->assertSame( ['Isotop\\Flypress\\Image_Editor_GD', 'Isotop\\Flypress\\Image_Editor_Imagick'], $out );
 	}
 
 	public function test_filter_handle_upload_prefilter() {

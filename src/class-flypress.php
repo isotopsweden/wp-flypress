@@ -32,6 +32,26 @@ class Flypress {
 	protected $orginal_dir;
 
 	/**
+	 * The class instance.
+	 *
+	 * @var \Isotop\Flypress\Flypress
+	 */
+	protected static $instance;
+
+	/**
+	 * Get class instance.
+	 *
+	 * @return \Isotop\Flypress\Flypress
+	 */
+	public static function instance() {
+		if ( ! isset( static::$instance ) ) {
+			static::$instance = new static;
+		}
+
+		return static::$instance;
+	}
+
+	/**
 	 * Flypress construct.
 	 */
 	public function __construct( AdapterInterface $adapter = null ) {
@@ -80,6 +100,33 @@ class Flypress {
 
 		// Setup filter for filtering image editors.
 		add_filter( 'wp_image_editors', [$this, 'filter_image_editors'], 9 );
+	}
+
+	/**
+	 * Get adapter instance.
+	 *
+	 * @return \League\Flysystem\AdapterInterface
+	 */
+	public function adapter() {
+		return $this->adapter;
+	}
+
+	/**
+	 * Get filesystem instance.
+	 *
+	 * @return \League\Flysystem\Filesystem
+	 */
+	public function filesystem() {
+		return $this->filesystem;
+	}
+
+	/**
+	 * Get original upload directory.
+	 *
+	 * @return array
+	 */
+	public function original_dir() {
+		return $this->orginal_dir;
 	}
 
 	/**
@@ -201,15 +248,6 @@ class Flypress {
 		$dir['baseurl'] = str_replace( $uploads.$uploads, $uploads, $dir['baseurl'] );
 
 		return $dir;
-	}
-
-	/**
-	 * Get adapter.
-	 *
-	 * @return \League\Flysystem\AdapterInterface
-	 */
-	public function get_adapter() {
-		return $this->adapter;
 	}
 
 	/**

@@ -22,6 +22,9 @@
   "autoload": {
     "classmap": [
       "src/"
+    ],
+    "files": [
+      "src/helpers.php"
     ]
   },
   "require": {
